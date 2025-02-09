@@ -84,7 +84,7 @@ func sendStatus(cfg *config.Config, status models.RawContainerStatus) error {
 		return err
 	}
 
-	urlAddress := fmt.Sprintf("%s:%d", cfg.HTTPServer.Host, cfg.HTTPServer.Port)
+	urlAddress := fmt.Sprintf("http://%s:%d/containers", cfg.HTTPServer.Host, cfg.HTTPServer.Port)
 	req, err := http.NewRequest("POST", urlAddress, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err

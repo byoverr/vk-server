@@ -10,6 +10,7 @@ EXPOSE 8080
 
 RUN go mod tidy
 
-RUN CGO_ENABLED=0 go build -o backend/cmd/main backend/cmd/main.go
+RUN CGO_ENABLED=0 go build -o /app/backend ./cmd/main.go
 
 CMD ["go", "run", "backend/cmd/main"]
+

@@ -33,7 +33,7 @@ type Pinger struct {
 func Load() *Config {
 	var cfg Config
 
-	err := cleanenv.ReadConfig("config.yml", &cfg)
+	err := cleanenv.ReadConfig("./pinger/config.yml", &cfg)
 	if err != nil {
 		log.Fatalf("cannot read config: %s", err)
 	}

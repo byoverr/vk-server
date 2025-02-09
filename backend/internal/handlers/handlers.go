@@ -44,7 +44,7 @@ func (h *Handler) PostContainer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request data"})
 		return
 	}
-
+	h.logger.Info("fgf", rawStatus)
 	status, err := rawStatus.ToContainerStatus()
 	if err != nil {
 		h.logger.Error("invalid time format")
@@ -53,7 +53,7 @@ func (h *Handler) PostContainer(c *gin.Context) {
 	}
 
 	if err := h.DB.CreateStatus(status); err != nil {
-		h.logger.Error("failed to insert container status")
+		h.logger.Error("failed to insert container status", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to insert container status"})
 		return
 	}

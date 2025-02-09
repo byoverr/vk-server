@@ -41,6 +41,9 @@
 
 # Quick Start
 
+```bash
+docker compose -f docker-compose.yml -p vk-server up
+```
 
 # Routes
 

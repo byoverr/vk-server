@@ -14,7 +14,7 @@ type PostgresqlDB struct {
 }
 
 func PostgresqlOpen(cfg *config.Config, ctx context.Context) (*PostgresqlDB, error) {
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s",
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
 		cfg.Storage.User, cfg.Storage.Password, cfg.Storage.Host,
 		cfg.Storage.Port, cfg.Storage.DbName, cfg.Storage.SSLMode)
 
@@ -43,7 +43,7 @@ func (s *PostgresqlDB) Init() error {
 CREATE TABLE IF NOT EXISTS statuses (
     id SERIAL PRIMARY KEY,
     ip TEXT,
-    ping_time timestamp NULL,
+    ping_time TEXT NULL,
     last_check timestamp NULL 
 );
 `

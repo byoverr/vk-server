@@ -9,13 +9,28 @@ import (
 func (s *PostgresqlDB) CreateStatus(status *models.ContainerStatus) error {
 	conn, err := s.db.Acquire(context.Background())
 	if err != nil {
-		fmt.Errorf("failed to get database connection: %w", err)
+		return fmt.Errorf("failed to get database connection: %w", err)
 	}
-	sql := `INSERT INTO statuses (ip, ping_time, last_check) VALUES ($1, $2, $3) RETURNING id`
-	err = conn.QueryRow(context.Background(), sql, status.IP, status.PingTime, status.LastCheck).Scan(&status.ID)
-	if err != nil {
-		return fmt.Errorf("failed to create status: %w", err)
+	defer conn.Release()
+
+	var existingID int
+	checkSQL := `SELECT id FROM statuses WHERE ip = $1`
+	err = conn.QueryRow(context.Background(), checkSQL, status.IP).Scan(&existingID)
+
+	if err == nil {
+		updateSQL := `UPDATE statuses SET ping_time = $1, last_check = $2 WHERE id = $3`
+		_, err = conn.Exec(context.Background(), updateSQL, status.PingTime, status.LastCheck, existingID)
+		if err != nil {
+			return fmt.Errorf("failed to update status: %w", err)
+		}
+	} else {
+		insertSQL := `INSERT INTO statuses (ip, ping_time, last_check) VALUES ($1, $2, $3) RETURNING id`
+		err = conn.QueryRow(context.Background(), insertSQL, status.IP, status.PingTime, status.LastCheck).Scan(&status.ID)
+		if err != nil {
+			return fmt.Errorf("failed to create status: %w", err)
+		}
 	}
+
 	return nil
 }
 

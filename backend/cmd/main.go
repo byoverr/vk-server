@@ -29,10 +29,6 @@ func main() {
 
 	handler := handlers.NewHandler(repo, logger)
 	router := gin.Default()
-	router.Use(
-		gin.Recovery(),
-		gin.Logger(),
-	)
 	handlers.InitRoutes(router, handler)
 
 	logger.Info("start server", slog.String("address", urlAddress))
