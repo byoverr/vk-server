@@ -1,23 +1,7 @@
 http_server:
-  host: "127.0.0.1"
+  host: "backend"
   port: 8080
 
 pinger:
   interval: 10  # Время в секундах между пингами
   timeout: 2    # Таймаут пинга в секундах
-
-nginx:
-  enabled: true
-  config_path: "/etc/nginx/nginx.conf"
-
-queue:
-  enabled: false  # Включение сервиса очередей (RabbitMQ, Kafka и т. д.)
-  type: "rabbitmq"
-  host: "rabbitmq"
-  port: 5672
-  user: "guest"
-  password: "guest"
-
-auth:
-  enable_verification: true  # Включить проверку API-токена
-  api_key: "super-secret-key"

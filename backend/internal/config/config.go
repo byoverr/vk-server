@@ -7,7 +7,7 @@ import (
 
 type Config struct {
 	HTTPServer HTTPServer `yaml:"http_server"`
-	Storage    Storage    `yaml:"storage"`
+	Storage    Storage    `yaml:"postgres"`
 	Pinger     Pinger     `yaml:"pinger"`
 }
 
@@ -33,7 +33,7 @@ type Pinger struct {
 func Load() *Config {
 	var cfg Config
 
-	err := cleanenv.ReadConfig("../backend/config.yml", &cfg)
+	err := cleanenv.ReadConfig("config.yml", &cfg)
 	if err != nil {
 		log.Fatalf("cannot read config: %s", err)
 	}

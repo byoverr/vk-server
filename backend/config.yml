@@ -1,9 +1,9 @@
 http_server:
-  host: "127.0.0.1"
+  host: "0.0.0.0"
   port: 8080
 
 postgres:
-  host: "postgres"
+  host: "db"
   port: 5432
   user: "postgres"
   password: "postgres"

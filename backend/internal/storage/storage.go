@@ -17,7 +17,7 @@ func PostgresqlOpen(cfg *config.Config, ctx context.Context) (*PostgresqlDB, err
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
 		cfg.Storage.User, cfg.Storage.Password, cfg.Storage.Host,
 		cfg.Storage.Port, cfg.Storage.DbName, cfg.Storage.SSLMode)
-
+	fmt.Println(connStr)
 	db, err := pgxpool.New(ctx, connStr)
 	if err != nil {
 		log.Fatalf("Unable to connection to database: %v\n", err)

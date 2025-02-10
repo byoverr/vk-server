@@ -1,13 +1,24 @@
-FROM golang:1.23-alpine
+FROM golang:1.23 AS builder
 
 WORKDIR /app
 
-COPY . .
+COPY go.mod go.sum ./
+RUN go mod download
 
-COPY config.yml /app/config.yml
+COPY . ./
 
-RUN go mod tidy
+RUN go build -o pinger ./cmd
 
-RUN CGO_ENABLED=0 go build -o app/pinger ./cmd/main.go
+FROM ubuntu:22.04
 
-CMD ["go", "run", "pinger/cmd/main"]
+WORKDIR /app
+
+COPY --from=builder /app/pinger .
+COPY config.yml .
+
+RUN chmod +x pinger
+
+
+EXPOSE 8080
+
+CMD ["/app/pinger"]

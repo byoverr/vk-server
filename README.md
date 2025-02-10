@@ -46,4 +46,19 @@ docker compose -f docker-compose.yml -p vk-server up
 ```
 
 # Routes
+[Frontend](http://localhost:3000) который доступен после docker-compose
 
+POST /containers отправляет ping_time и сохраняет в базу данных
+```bash
+curl --location --request GET 'http://0.0.0.0:8080/containers' \
+--header 'Content-Type: application/json' \
+--data '{
+    "ping_time": "123ms",
+    "ip": "127.0.0.12"
+}'
+```
+
+GET получает все IP которые когда либо замечались среди docker-контейнеров
+```bash
+curl --location 'http://0.0.0.0:8080/containers'
+```

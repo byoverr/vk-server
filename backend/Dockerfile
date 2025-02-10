@@ -1,16 +1,24 @@
-FROM golang:1.23-alpine
+FROM golang:1.23 AS builder
 
 WORKDIR /app
 
-COPY . .
+COPY go.mod go.sum ./
+RUN go mod download
 
-COPY config.yml /app/config.yml
+COPY . ./
+
+RUN go build -o backend ./cmd
+
+FROM ubuntu:22.04
+
+WORKDIR /app
+
+COPY --from=builder /app/backend .
+COPY config.yml .
+
+RUN chmod +x backend
+
 
 EXPOSE 8080
 
-RUN go mod tidy
-
-RUN CGO_ENABLED=0 go build -o /app/backend ./cmd/main.go
-
-CMD ["go", "run", "backend/cmd/main"]
-
+CMD ["/app/backend"]
